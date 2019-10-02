@@ -73,6 +73,50 @@ class VQAClassificationDataset(Dataset):
         return self._n_classes
 
 
+class RadiologyImages(Dataset):
+    def __init__(self, image_folder, image_ext):
+        """
+        Initialization of custom data to load the pre-training images.
+        :param image_folder: Absolute path to the folder with all the images
+        :param image_ext: Extension of the image in training set eg .png, .jpg etc.
+
+        """
+
+        self.data_path = image_folder
+        self.ext = image_ext
+        self.width = 64
+        self.height = 64
+
+    def __getitem__(self, index):
+        """
+
+        :param index:
+        :return:
+        """
+        label = 0
+
+        image_name = str(index).zfill(6)
+        image = Image.open(os.path.join(self.data_path, image_name + self.ext))
+
+        grayscale_transform = transforms.Grayscale(num_output_channels=1)
+        gray_image = grayscale_transform(image)
+
+        resize_transform = transforms.Resize((self.width, self.height))
+        resized_img = resize_transform(gray_image)
+
+        pil2tensor_transform = transforms.ToTensor()
+        image_tensor = pil2tensor_transform(resized_img)
+
+        return image_tensor, label
+
+    def __len__(self):
+        """
+
+        :return:
+        """
+        return 10395
+
+
 if __name__ == "__main__":
     """
     Class testing + Example 
