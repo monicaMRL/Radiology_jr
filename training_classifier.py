@@ -4,7 +4,7 @@ from torch.utils.data.dataloader import DataLoader
 import torch.nn as nn
 import torch
 from torch.autograd import Variable
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 from Dataset_module import VQAClassificationDataset
 from VQA_classification_models import VQAClassifier
@@ -29,8 +29,8 @@ learning_rate = 0.001
 
 optimizer = torch.optim.Adam(vqa_model.parameters(), lr=learning_rate)
 
-batch_size = 1
-n_iters = 60000
+batch_size = 10
+n_iters = 300000
 num_epochs = n_iters / (len(classification_dataset) / batch_size)
 num_epochs = int(num_epochs)
 
@@ -64,9 +64,14 @@ for epoch in range(num_epochs):
         # Updating parameters
         optimizer.step()
 
+        # print("Iteration Loss: {}".format(loss.item()))
         loss_list.append(loss.item())
 
-    print(epoch_number, epoch_loss)
+    print("Epoch number: {} with loss: {}".format(epoch_number, epoch_loss/len(classification_dataset) / batch_size))
     epoch_number += 1
 
-plt.plot(loss_list)
+# plt.plot(loss_list)
+# plt.show()
+
+model_path = "/home/monica/Research/Insight/learned_models/vqamodel_300"
+torch.save(vqa_model.state_dict(), model_path)
