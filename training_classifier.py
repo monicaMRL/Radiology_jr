@@ -1,14 +1,14 @@
 import os
-from config_variables import AB_PATH
+from config.global_path import AB_PATH
 from torch.utils.data.dataloader import DataLoader
 import torch.nn as nn
 import torch
 from torch.autograd import Variable
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
-from Dataset_module import VQAClassificationDataset
-from VQA_classification_models import VQAClassifier
-from RAD_CAE_model import RadiologyCAE
+from data_utilities.Dataset_module import VQAClassificationDataset
+from rj_models.VQA_classification import VQAClassifier
+from rj_models.RAD_CAE import RadiologyCAE
 
 raw_data_path = os.path.join(AB_PATH, "unformatted_data/qa_textdata_final.json")
 image_folder = "/home/monica/Research/Insight/data_generation/images"
@@ -70,8 +70,8 @@ for epoch in range(num_epochs):
     print("Epoch number: {} with loss: {}".format(epoch_number, epoch_loss/len(classification_dataset) / batch_size))
     epoch_number += 1
 
-# plt.plot(loss_list)
-# plt.show()
+plt.plot(loss_list)
+plt.show()
 
 model_path = "/home/monica/Research/Insight/learned_models/vqamodel_300"
 torch.save(vqa_model.state_dict(), model_path)
