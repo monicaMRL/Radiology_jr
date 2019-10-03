@@ -6,7 +6,7 @@ import os
 import json
 
 from data_generation.classifier_structuring import answer_vocabulary, convert2labels
-from config_variables import AB_PATH
+from config.global_path import AB_PATH
 
 
 class VQAClassificationDataset(Dataset):
