@@ -10,11 +10,12 @@ from config.global_path import AB_PATH
 
 
 class VQAClassificationDataset(Dataset):
+    ANS_2_LABEL = "/home/monica/Research/Insight/Radiology_jr/unformatted_data/answer_label.json"
     """
     Data set class for classifcation problem. It can be wrapped using functions from Dataloader to
     iterate over data in batches.
     """
-    def __init__(self, image_folder, raw_data_file):
+    def __init__(self, image_folder, raw_data_file, save_answer_labels=False):
         """
 
         :param image_folder: path to folder with all images
@@ -27,8 +28,8 @@ class VQAClassificationDataset(Dataset):
         self.image_folder = image_folder
         self.qa_list = json.load(open(raw_data_file))
 
-        self.answer_labels = convert2labels(answer_vocabulary(raw_data_file))
-        self._n_classes = len(self.answer_labels.keys())
+        self._answer_labels = convert2labels(answer_vocabulary(raw_data_file), destination_file=VQAClassificationDataset.ANS_2_LABEL, save2file=save_answer_labels)
+        self._n_classes = len(self._answer_labels.keys())
 
         self.height = 128
         self.width = 128
@@ -58,7 +59,7 @@ class VQAClassificationDataset(Dataset):
 
         answer = str(qa_dict["answer"]).lower().split(" ")[0]
 
-        answer_label = self.answer_labels[answer]
+        answer_label = self._answer_labels[answer]
 
         return image_tensor, question, len(question), answer_label
 
@@ -71,6 +72,10 @@ class VQAClassificationDataset(Dataset):
     @property
     def number_classes(self):
         return self._n_classes
+
+    @property
+    def label2answer_dict(self):
+        return self._answer_labels
 
 
 class RadiologyImages(Dataset):

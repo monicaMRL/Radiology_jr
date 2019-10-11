@@ -6,7 +6,7 @@ import torch.nn as nn
 import torch
 
 from pretrained_models.models import InferSent
-from RAD_CAE_model import RadiologyCAE
+from rj_models.RAD_CAE import RadiologyCAE
 
 
 class SaveFeatures():

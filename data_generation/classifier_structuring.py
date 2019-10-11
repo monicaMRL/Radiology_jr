@@ -10,6 +10,7 @@ Format: list of dictionaries
 """
 import json
 import unittest
+import os
 
 
 def answer_vocabulary(raw_file_name):
@@ -61,8 +62,17 @@ def convert2labels(unique_words, destination_file=None, save2file=False):
         answer_labels[unique_words[i]] = i
 
     if save2file:
-        unittest.TestCase.assertIsNotNone(destination_file)
-        json.dump(answer_labels, open(destination_file, "w"), indent=4)
+        if destination_file is None:
+            raise Exception("Destination file path is None")
+
+        if os.path.exists(destination_file):
+            print("File already exists, saving by appending temp to name instead")
+            name, ext = destination_file.split('.')
+            name = name + '_temp.'
+            new_name = name + ext
+            json.dump(answer_labels, open(new_name, "w"), indent=4)
+        else:
+            json.dump(answer_labels, open(destination_file, "w"), indent=4)
 
     return answer_labels
 
