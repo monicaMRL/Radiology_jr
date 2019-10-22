@@ -1,3 +1,3 @@
 import os
 
-AB_PATH = os.getcwd()
+AB_PATH = "/home/monica/Research/Insight/Radiology_jr/"

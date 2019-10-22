@@ -1,0 +1,142 @@
+<ScreenOne>:
+    img:img
+    left_ip:left_ip
+    center_ip:center_ip
+    right_ip:right_ip
+    ans_left_ip:ans_left_ip
+    ans_center_ip:ans_center_ip
+    ans_right_ip:ans_right_ip
+    BoxLayout:
+        Button:
+            text: "Answer"
+            pos_hint: {'right': 0.45, 'bottom': 1}
+            size_hint: 0.15, 0.1
+            on_release:
+                root.show_answers()
+            on_press:
+                # You can define the duration of the change
+                # and the direction of the slide
+                # root.manager.transition.direction = 'left'
+                # root.manager.transition.duration = 1
+                # root.manager.current = 'screen_two'
+                
+                
+        Button:
+            text: 'Load'
+            pos_hint: {'right': 0.55, 'bottom': 1}
+            size_hint: 0.15, 0.1
+            on_release:
+                root.show_load()
+            
+        Button:
+            text: 'Save'
+            pos_hint: {'right': 0.65, 'bottom': 1}
+            size_hint: 0.15, 0.1
+            on_release:
+                root.show_save()
+    
+    BoxLayout:
+        TextInput:
+            id:left_ip
+            size_hint: 0.4, 0.15
+            pos_hint: {'right': 0.45, 'top': 0.4}
+            font_size: 20
+        TextInput:
+            id:center_ip
+            size_hint: 0.4, 0.15
+            pos_hint: {'right': 0.55, 'top': 0.4}
+            font_size: 20
+        TextInput:
+            id:right_ip
+            size_hint: 0.4, 0.15
+            pos_hint: {'right': 0.65, 'top': 0.4}
+            font_size: 20
+    
+    BoxLayout:
+        TextInput:
+            id:ans_left_ip
+            size_hint: 0.4, 0.15
+            pos_hint: {'right': 0.45, 'top': 0.25}
+            font_size: 20
+        TextInput:
+            id:ans_center_ip
+            size_hint: 0.4, 0.15
+            pos_hint: {'right': 0.55, 'top': 0.25}
+            font_size: 20
+        TextInput:
+            id:ans_right_ip
+            size_hint: 0.4, 0.15
+            pos_hint: {'right': 0.65, 'top': 0.25}
+            font_size: 20
+    
+    RelativeLayout:
+        Image:
+            id:img
+            source: "/home/monica/Research/Insight/Week_1_Presentation/RJ_logoFinal.png"
+            pos_hint: {'right': 0.8, 'top': 1}
+            size_hint: 0.6, 0.6
+            
+            
+
+<ScreenTwo>:
+    button1:button1
+    text_input_ans: text_input_ans
+    BoxLayout:
+        Button:
+            id:button1
+            text: "Go to Screen 1"
+            on_press:
+                root.manager.transition.direction = 'right'
+                root.manager.current = 'screen_one'
+    BoxLayout:
+        TextInput:
+            id:text_input_ans
+            text: "Answers will appear here"
+            size_hint: 0.4, 0.15
+            pos_hint: {'right': 0.45, 'top': 0.3}
+                
+<LoadDialog>:
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        FileChooserListView:
+            id: filechooser
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Cancel"
+                on_release: root.cancel()
+
+            Button:
+                text: "Load"
+                on_release: root.load(filechooser.path, filechooser.selection)
+                
+<SaveDialog>:
+    text_input: text_input
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        FileChooserListView:
+            id: filechooser
+            on_selection: text_input.text = self.selection and self.selection[0] or ''
+
+        TextInput:
+            id: text_input
+            size_hint_y: None
+            height: 30
+            multiline: False
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Cancel"
+                on_release: root.cancel()
+
+            Button:
+                text: "Save"
+                on_release: root.save(filechooser.path, text_input.text)

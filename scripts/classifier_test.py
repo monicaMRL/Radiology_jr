@@ -1,7 +1,6 @@
 import os
 from config.global_path import AB_PATH
 from torch.utils.data.dataloader import DataLoader
-import torch.nn as nn
 import torch
 from torch.autograd import Variable
 import torchvision.transforms as transforms
@@ -14,7 +13,7 @@ raw_data_path = os.path.join(AB_PATH, "unformatted_data/qa_textdata_final.json")
 image_folder = "/home/monica/Research/Insight/data_generation/images"
 model_path = "/home/monica/Research/Insight/learned_models/vqamodel_300"
 
-classification_dataset = VQAClassificationDataset(image_folder, raw_data_path, save_answer_labels=True)
+classification_dataset = VQAClassificationDataset(image_folder, raw_data_path, save_answer_labels=False)
 classification_dataloader = DataLoader(classification_dataset, batch_size=1, shuffle=True)
 answer_dict = classification_dataset.label2answer_dict
 
